@@ -113,8 +113,8 @@ export default function Reports() {
       const { buildReport, exportExcel, exportCSV } = await import("../lib/excel");
       const report = await buildReport(range, label);
       if (kind === "xlsx") await exportExcel(report);
-      else exportCSV(report);
-      toast.show(kind === "xlsx" ? "Reporte Excel descargado" : "CSV descargado");
+      else await exportCSV(report);
+      toast.show(kind === "xlsx" ? "Reporte Excel listo" : "CSV listo");
     } catch (error) {
       console.error(error);
       toast.show("No se pudo generar el reporte", "error");

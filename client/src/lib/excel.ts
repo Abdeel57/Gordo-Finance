@@ -104,13 +104,43 @@ function fileName(report: ReportData, ext: string): string {
   return `GordoFinance_${label}_${report.range.from}_a_${report.range.to}.${ext}`;
 }
 
-function download(blob: Blob, name: string): void {
+function anchorDownload(blob: Blob, name: string): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
   a.download = name;
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
+
+function isIOS(): boolean {
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    // iPadOS se reporta como Mac, pero con pantalla táctil
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
+}
+
+/**
+ * Entrega el archivo al usuario. En iOS (sobre todo con la app instalada)
+ * la descarga clásica no funciona bien, así que se usa la hoja nativa de
+ * compartir: permite guardar en Archivos, abrir en Excel o enviarlo.
+ * En escritorio y Android se descarga directamente.
+ */
+async function deliver(blob: Blob, name: string): Promise<void> {
+  const file = new File([blob], name, { type: blob.type });
+  if (isIOS() && typeof navigator.canShare === "function" && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file] });
+      return;
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") return; // canceló el usuario
+      // si el share falla, intenta la descarga clásica
+    }
+  }
+  anchorDownload(blob, name);
 }
 
 export async function exportExcel(report: ReportData): Promise<void> {
@@ -125,7 +155,7 @@ export async function exportExcel(report: ReportData): Promise<void> {
   }
   const wb = await buildWorkbook(report, logo);
   const buffer = await wb.xlsx.writeBuffer();
-  download(
+  await deliver(
     new Blob([buffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     }),
@@ -133,7 +163,7 @@ export async function exportExcel(report: ReportData): Promise<void> {
   );
 }
 
-export function exportCSV(report: ReportData): void {
+export async function exportCSV(report: ReportData): Promise<void> {
   const csv = "﻿" + buildMovementsCSV(report);
-  download(new Blob([csv], { type: "text/csv;charset=utf-8" }), fileName(report, "csv"));
+  await deliver(new Blob([csv], { type: "text/csv;charset=utf-8" }), fileName(report, "csv"));
 }
