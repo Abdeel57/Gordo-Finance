@@ -109,10 +109,10 @@ export default function Reports() {
     if (exporting) return;
     setExporting(true);
     try {
-      // SheetJS se carga bajo demanda para mantener ligera la app.
+      // ExcelJS se carga bajo demanda para mantener ligera la app.
       const { buildReport, exportExcel, exportCSV } = await import("../lib/excel");
       const report = await buildReport(range, label);
-      if (kind === "xlsx") exportExcel(report);
+      if (kind === "xlsx") await exportExcel(report);
       else exportCSV(report);
       toast.show(kind === "xlsx" ? "Reporte Excel descargado" : "CSV descargado");
     } catch (error) {

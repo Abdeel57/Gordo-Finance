@@ -41,7 +41,7 @@ para evitar errores de punto flotante.
 | Frontend | React 19 + TypeScript + Vite, Tailwind CSS 4, lucide-react |
 | Datos locales | IndexedDB con Dexie (local-first, actualización reactiva) |
 | PWA | vite-plugin-pwa (manifest, service worker, precache) |
-| Excel | SheetJS (xlsx), carga bajo demanda |
+| Excel | ExcelJS (hojas con estilos, logo y formatos), carga bajo demanda |
 | Backend | Node.js + Express + Zod |
 | Base de datos | PostgreSQL + Prisma ORM (migraciones incluidas) |
 | Despliegue | Railway (API + DB) y Netlify o Vercel (frontend) |
