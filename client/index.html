@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Cuenta Clara — Tu dinero hoy</title>
+    <meta name="description" content="Registra tus ingresos y gastos en segundos" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Cuenta Clara" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4F5F7" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0C1322" />
+    <style>
+      /* Pantalla de carga mostrada mientras arranca la app */
+      #splash {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        background: #f4f5f7;
+        z-index: 9999;
+        transition: opacity 0.25s ease;
+      }
+      @media (prefers-color-scheme: dark) {
+        #splash {
+          background: #0c1322;
+        }
+      }
+      #splash .logo {
+        width: 72px;
+        height: 72px;
+        border-radius: 22px;
+        background: linear-gradient(140deg, #10b981, #047857);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font: 800 38px/1 system-ui, sans-serif;
+        box-shadow: 0 12px 32px rgba(4, 120, 87, 0.35);
+        animation: splash-pulse 1.2s ease-in-out infinite;
+      }
+      @keyframes splash-pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.06);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div id="splash"><div class="logo">$</div></div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+// Cuenta Clara — esquema de base de datos
+// Los montos se guardan como enteros en centavos (MXN) para evitar errores de punto flotante.
+// Los borrados son lógicos (deleted_at) para que la sincronización offline funcione con tombstones.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  passwordHash String        @map("password_hash")
+  name         String?
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  accounts     Account[]
+  categories   Category[]
+  transactions Transaction[]
+  settings     UserSettings?
+
+  @@map("users")
+}
+
+model UserSettings {
+  userId    String   @id @map("user_id")
+  currency  String   @default("MXN")
+  timezone  String   @default("America/Mexico_City")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}
+
+model Account {
+  id             String        @id
+  userId         String        @map("user_id")
+  name           String
+  // Saldo inicial en centavos. Saldo actual = inicial + ingresos - gastos.
+  initialBalance Int           @default(0) @map("initial_balance")
+  icon           String?
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @map("updated_at")
+  deletedAt      DateTime?     @map("deleted_at")
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions   Transaction[]
+
+  @@index([userId, updatedAt])
+  @@map("accounts")
+}
+
+model Category {
+  id           String        @id
+  userId       String        @map("user_id")
+  name         String
+  type         String // "income" | "expense"
+  icon         String?
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @map("updated_at")
+  deletedAt    DateTime?     @map("deleted_at")
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@index([userId, updatedAt])
+  @@map("categories")
+}
+
+model Transaction {
+  id              String    @id
+  userId          String    @map("user_id")
+  accountId       String    @map("account_id")
+  categoryId      String    @map("category_id")
+  type            String // "income" | "expense"
+  // Monto en centavos, siempre positivo. El tipo decide si suma o resta.
+  amount          Int
+  description     String
+  transactionDate DateTime  @map("transaction_date") @db.Date
+  notes           String?
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  account         Account   @relation(fields: [accountId], references: [id])
+  category        Category  @relation(fields: [categoryId], references: [id])
+
+  @@index([userId, transactionDate])
+  @@index([userId, updatedAt])
+  @@map("transactions")
+}

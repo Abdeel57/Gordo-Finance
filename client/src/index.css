@@ -1,0 +1,183 @@
+@import "tailwindcss";
+@import "@fontsource/gabarito/500.css";
+@import "@fontsource/gabarito/700.css";
+@import "@fontsource/gabarito/800.css";
+@import "@fontsource/onest/400.css";
+@import "@fontsource/onest/500.css";
+@import "@fontsource/onest/600.css";
+@import "@fontsource/onest/700.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Tokens de diseño. La paleta ingreso/gasto fue validada (contraste, banda de
+  luminosidad y visión de color) para superficie clara y oscura por separado.
+*/
+:root {
+  --surface: #f4f5f7;
+  --card: #ffffff;
+  --raised: #ffffff;
+  --ink: #16213a;
+  --ink-soft: #5a6478;
+  --ink-faint: #98a0b3;
+  --line: #e6e8ee;
+
+  --income: #059669;
+  --income-deep: #047857;
+  --income-text: #047857;
+  --income-tint: #e2f4ec;
+
+  --expense: #e4572e;
+  --expense-deep: #c74620;
+  --expense-text: #bc431e;
+  --expense-tint: #fcece6;
+
+  --navy: #121b2b;
+  --navy-2: #1c2a45;
+}
+
+.dark {
+  --surface: #0c1322;
+  --card: #151e33;
+  --raised: #1a2540;
+  --ink: #edf0f8;
+  --ink-soft: #a9b2c6;
+  --ink-faint: #6d7891;
+  --line: #24304c;
+
+  --income: #0da271;
+  --income-deep: #0b8f64;
+  --income-text: #3ecf9a;
+  --income-tint: #10281f;
+
+  --expense: #e85d2f;
+  --expense-deep: #d14f24;
+  --expense-text: #fb8a5c;
+  --expense-tint: #33150c;
+
+  --navy: #121b2b;
+  --navy-2: #1c2a45;
+}
+
+@theme inline {
+  --font-display: "Gabarito", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Onest", ui-sans-serif, system-ui, sans-serif;
+
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-raised: var(--raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-line: var(--line);
+  --color-income: var(--income);
+  --color-income-deep: var(--income-deep);
+  --color-income-text: var(--income-text);
+  --color-income-tint: var(--income-tint);
+  --color-expense: var(--expense);
+  --color-expense-deep: var(--expense-deep);
+  --color-expense-text: var(--expense-text);
+  --color-expense-tint: var(--expense-tint);
+  --color-navy: var(--navy);
+  --color-navy-2: var(--navy-2);
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply bg-surface font-sans text-ink antialiased;
+  overscroll-behavior-y: none;
+}
+
+/* Números tabulares para que los montos queden alineados en listas */
+@utility tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Quitar flechas de inputs numéricos */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Animaciones */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes pop-check {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@utility rise-in {
+  animation: rise-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@utility fade-in-fast {
+  animation: fade-in 0.18s ease both;
+}
+@utility sheet-up {
+  animation: sheet-up 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@utility pop-check {
+  animation: pop-check 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Presión táctil tipo app nativa */
+@utility pressable {
+  transition:
+    transform 0.12s ease,
+    opacity 0.12s ease;
+  &:active {
+    transform: scale(0.97);
+  }
+}
