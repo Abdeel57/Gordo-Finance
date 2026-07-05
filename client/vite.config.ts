@@ -9,18 +9,18 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.svg", "icons/*.png"],
+      includeAssets: ["favicon.png", "logo.png", "icons/*.png"],
       manifest: {
         id: "/",
-        name: "Cuenta Clara",
-        short_name: "Cuenta Clara",
+        name: "Gordo Finance",
+        short_name: "Gordo Finance",
         description: "Registra tus ingresos y gastos en segundos",
         lang: "es-MX",
         display: "standalone",
         orientation: "portrait",
         start_url: "/",
-        background_color: "#F4F5F7",
-        theme_color: "#121B2B",
+        background_color: "#f3f6f4",
+        theme_color: "#067647",
         icons: [
           { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
           { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },

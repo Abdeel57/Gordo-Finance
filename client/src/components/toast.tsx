@@ -34,7 +34,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             className="rise-in flex items-center gap-2 rounded-full bg-navy px-4 py-2.5 text-sm font-semibold text-white shadow-xl dark:bg-raised dark:text-ink"
           >
             {t.kind === "success" ? (
-              <CheckCircle2 size={17} className="shrink-0 text-[#3ecf9a]" />
+              <CheckCircle2 size={17} className="shrink-0 text-[#43d492]" />
             ) : (
               <XCircle size={17} className="shrink-0 text-[#fb8a5c]" />
             )}

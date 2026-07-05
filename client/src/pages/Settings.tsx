@@ -189,7 +189,7 @@ export default function Settings() {
       </Card>
 
       <p className="pb-2 text-center text-[11.5px] text-ink-faint">
-        Cuenta Clara · Hecho para registrar tu dinero en segundos
+        Gordo Finance · Hecho para registrar tu dinero en segundos
       </p>
 
       {accountSheet && (

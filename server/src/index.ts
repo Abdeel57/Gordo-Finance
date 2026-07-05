@@ -15,7 +15,7 @@ app.use(cors({ origin: env.corsOrigin }));
 app.use(express.json({ limit: "2mb" }));
 
 app.get("/api/health", (_req, res) => {
-  res.json({ ok: true, name: "Cuenta Clara API" });
+  res.json({ ok: true, name: "Gordo Finance API" });
 });
 
 app.use("/api/auth", authRouter);
@@ -38,5 +38,5 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 app.listen(env.port, () => {
-  console.log(`Cuenta Clara API escuchando en http://localhost:${env.port}`);
+  console.log(`Gordo Finance API escuchando en http://localhost:${env.port}`);
 });

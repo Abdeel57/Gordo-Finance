@@ -211,14 +211,14 @@ function fileName(report: ReportData, ext: string): string {
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
     .replace(/[^a-zA-Z0-9]+/g, "-");
-  return `CuentaClara_${label}_${report.range.from}_a_${report.range.to}.${ext}`;
+  return `GordoFinance_${label}_${report.range.from}_a_${report.range.to}.${ext}`;
 }
 
 export function exportExcel(report: ReportData): void {
   const wb = XLSX.utils.book_new();
 
   const resumen: Row[] = [
-    ["Cuenta Clara — Reporte financiero"],
+    ["Gordo Finance — Reporte financiero"],
     [],
     ["Periodo", report.label],
     ["Desde", fmtDate(report.range.from)],

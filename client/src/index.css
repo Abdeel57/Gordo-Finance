@@ -10,53 +10,61 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
-  Tokens de diseño. La paleta ingreso/gasto fue validada (contraste, banda de
-  luminosidad y visión de color) para superficie clara y oscura por separado.
+  Identidad Gordo Finance: verde del logo (#067647), negro carbón y blanco.
+  Los pares ingreso/gasto están validados (contraste, banda de luminosidad y
+  visión de color) sobre la superficie clara y la oscura por separado.
 */
 :root {
-  --surface: #f4f5f7;
+  --surface: #f3f6f4;
   --card: #ffffff;
   --raised: #ffffff;
-  --ink: #16213a;
-  --ink-soft: #5a6478;
-  --ink-faint: #98a0b3;
-  --line: #e6e8ee;
+  --ink: #0d1512;
+  --ink-soft: #4c5b53;
+  --ink-faint: #8a9a90;
+  --line: #e3eae5;
 
-  --income: #059669;
-  --income-deep: #047857;
-  --income-text: #047857;
-  --income-tint: #e2f4ec;
+  --income: #067647;
+  --income-deep: #045d38;
+  --income-text: #04613a;
+  --income-tint: #e4f3ea;
 
-  --expense: #e4572e;
-  --expense-deep: #c74620;
-  --expense-text: #bc431e;
-  --expense-tint: #fcece6;
+  --expense: #d8442a;
+  --expense-deep: #bd3a22;
+  --expense-text: #b93a21;
+  --expense-tint: #fceae5;
 
-  --navy: #121b2b;
-  --navy-2: #1c2a45;
+  /* Carbón de marca: navegación, botones primarios, hero */
+  --navy: #0d1512;
+  --navy-2: #1c2a22;
+
+  --brand: #067647;
+  --brand-bright: #0ea15e;
 }
 
 .dark {
-  --surface: #0c1322;
-  --card: #151e33;
-  --raised: #1a2540;
-  --ink: #edf0f8;
-  --ink-soft: #a9b2c6;
-  --ink-faint: #6d7891;
-  --line: #24304c;
+  --surface: #0a0f0d;
+  --card: #131b16;
+  --raised: #1b261f;
+  --ink: #eef4f0;
+  --ink-soft: #a6b5ac;
+  --ink-faint: #69796f;
+  --line: #243129;
 
-  --income: #0da271;
-  --income-deep: #0b8f64;
-  --income-text: #3ecf9a;
-  --income-tint: #10281f;
+  --income: #109c5d;
+  --income-deep: #0d8850;
+  --income-text: #43d492;
+  --income-tint: #10291c;
 
-  --expense: #e85d2f;
-  --expense-deep: #d14f24;
+  --expense: #e25b33;
+  --expense-deep: #cc4d28;
   --expense-text: #fb8a5c;
-  --expense-tint: #33150c;
+  --expense-tint: #331409;
 
-  --navy: #121b2b;
-  --navy-2: #1c2a45;
+  --navy: #0d1512;
+  --navy-2: #1c2a22;
+
+  --brand: #109c5d;
+  --brand-bright: #2fbe7d;
 }
 
 @theme inline {
@@ -80,6 +88,8 @@
   --color-expense-tint: var(--expense-tint);
   --color-navy: var(--navy);
   --color-navy-2: var(--navy-2);
+  --color-brand: var(--brand);
+  --color-brand-bright: var(--brand-bright);
 }
 
 html {
@@ -89,6 +99,25 @@ html {
 body {
   @apply bg-surface font-sans text-ink antialiased;
   overscroll-behavior-y: none;
+  /* Atmósfera: destellos muy sutiles del verde de marca sobre el fondo claro */
+  background-image:
+    radial-gradient(640px 400px at 90% -6%, rgba(6, 118, 71, 0.08), transparent 62%),
+    radial-gradient(520px 360px at -14% 10%, rgba(6, 118, 71, 0.05), transparent 60%);
+  background-repeat: no-repeat;
+}
+
+.dark body {
+  background-image:
+    radial-gradient(640px 400px at 90% -6%, rgba(16, 156, 93, 0.1), transparent 62%),
+    radial-gradient(520px 360px at -14% 10%, rgba(16, 156, 93, 0.06), transparent 60%);
+}
+
+/* Hero de la pantalla de inicio: del verde profundo del logo al carbón */
+@utility hero-gradient {
+  background:
+    radial-gradient(340px 220px at 82% -18%, rgba(14, 161, 94, 0.5), transparent 70%),
+    radial-gradient(280px 200px at -8% 112%, rgba(14, 161, 94, 0.22), transparent 70%),
+    linear-gradient(150deg, #0d4229 0%, #0b2519 55%, #0b120e 100%);
 }
 
 /* Números tabulares para que los montos queden alineados en listas */
@@ -169,6 +198,13 @@ input[type="number"] {
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+/* Logo bicolor (verde + negro): en modo oscuro se vuelve blanco puro */
+@utility logo-adaptive {
+  .dark & {
+    filter: brightness(0) invert(1);
   }
 }
 

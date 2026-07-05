@@ -5,7 +5,10 @@ const media = window.matchMedia("(prefers-color-scheme: dark)");
 
 export function getTheme(): Theme {
   const stored = localStorage.getItem(KEY);
-  return stored === "light" || stored === "dark" ? stored : "system";
+  if (stored === "light" || stored === "dark" || stored === "system") return stored;
+  // La identidad Gordo Finance es luminosa: claro por defecto,
+  // con "Sistema" y "Oscuro" disponibles en Ajustes.
+  return "light";
 }
 
 function isDark(theme: Theme): boolean {

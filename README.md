@@ -1,4 +1,4 @@
-# Cuenta Clara 💵
+# Gordo Finance 💵
 
 PWA de finanzas personales pensada para el teléfono: registra un ingreso o un
 gasto en menos de 5 segundos, mira cuánto dinero deberías tener y descarga tu

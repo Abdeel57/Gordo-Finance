@@ -37,11 +37,12 @@ export default function Login() {
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-lg flex-col justify-center px-6 py-10">
       <div className="rise-in flex flex-col items-center text-center">
-        <div className="flex h-[76px] w-[76px] items-center justify-center rounded-[24px] bg-gradient-to-br from-[#10b981] to-[#047857] font-display text-4xl font-extrabold text-white shadow-[0_16px_36px_-10px_rgba(4,120,87,0.5)]">
-          $
-        </div>
-        <h1 className="mt-4 font-display text-[30px] font-extrabold text-ink">Cuenta Clara</h1>
-        <p className="mt-1 text-[14.5px] text-ink-soft">
+        <img
+          src="/logo.png"
+          alt="Gordo Finance"
+          className="logo-adaptive h-auto w-[min(250px,64vw)]"
+        />
+        <p className="mt-3 text-[14.5px] text-ink-soft">
           Tu dinero, claro y en segundos
         </p>
       </div>

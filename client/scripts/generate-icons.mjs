@@ -1,51 +1,67 @@
-// Genera los iconos PNG de la PWA a partir de un SVG (requiere sharp).
+// Genera los recursos de marca de la PWA a partir del logo oficial
+// (../logo-icon gordofinance.png en la raíz del repo). Requiere sharp.
 // Uso: npm run icons
 import sharp from "sharp";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
-const outDir = path.join(root, "..", "public", "icons");
+const logoPath = path.join(root, "..", "..", "logo-icon gordofinance.png");
 const publicDir = path.join(root, "..", "public");
-
-function makeSvg({ maskable = false } = {}) {
-  // Con maskable el fondo llena todo el lienzo y el glifo se encoge
-  // a la zona segura (80% central).
-  const glyphSize = maskable ? 250 : 310;
-  const glyphY = maskable ? 344 : 368;
-  const rx = maskable ? 0 : 116;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#10b981"/>
-      <stop offset="1" stop-color="#047857"/>
-    </linearGradient>
-  </defs>
-  <rect width="512" height="512" rx="${rx}" fill="url(#bg)"/>
-  <circle cx="380" cy="120" r="170" fill="#ffffff" opacity="0.08"/>
-  <text x="256" y="${glyphY}" text-anchor="middle"
-    font-family="Arial, Helvetica, sans-serif" font-weight="800"
-    font-size="${glyphSize}" fill="#ffffff">$</text>
-</svg>`;
-}
-
-const standard = Buffer.from(makeSvg());
-const maskable = Buffer.from(makeSvg({ maskable: true }));
+const outDir = path.join(publicDir, "icons");
 
 await mkdir(outDir, { recursive: true });
 
-const jobs = [
-  { src: standard, size: 192, file: "icon-192.png" },
-  { src: standard, size: 512, file: "icon-512.png" },
-  { src: standard, size: 180, file: "apple-touch-icon.png" },
-  { src: maskable, size: 512, file: "maskable-512.png" },
-];
+// 1) Wordmark completo recortado (login, splash, encabezado)
+const trimmed = await sharp(logoPath).trim().png().toBuffer();
+const { width: W, height: H } = await sharp(trimmed).metadata();
+await sharp(trimmed)
+  .resize({ width: 900, withoutEnlargement: true })
+  .png()
+  .toFile(path.join(publicDir, "logo.png"));
+console.log(`✓ logo.png (wordmark ${W}x${H})`);
 
-for (const job of jobs) {
-  await sharp(job.src).resize(job.size, job.size).png().toFile(path.join(outDir, job.file));
-  console.log("✓", job.file);
+// 2) La "G" del oso como icono de app: franja izquierda de la línea "Gordo"
+//    (la fila "FINANCE" queda fuera por la altura del recorte)
+const gRegion = await sharp(trimmed)
+  .extract({
+    left: 0,
+    top: 0,
+    width: Math.round(W * 0.253),
+    height: Math.round(H * 0.74),
+  })
+  .trim()
+  .png()
+  .toBuffer();
+
+async function iconOnWhite(source, size, contentRatio, file) {
+  const content = Math.round(size * contentRatio);
+  const glyph = await sharp(source)
+    .resize(content, content, { fit: "inside" })
+    .png()
+    .toBuffer();
+  await sharp({
+    create: { width: size, height: size, channels: 4, background: "#ffffff" },
+  })
+    .composite([{ input: glyph, gravity: "center" }])
+    .png()
+    .toFile(path.join(outDir, file));
+  console.log("✓", file);
 }
 
-await writeFile(path.join(publicDir, "favicon.svg"), makeSvg());
-console.log("✓ favicon.svg");
+await iconOnWhite(gRegion, 192, 0.74, "icon-192.png");
+await iconOnWhite(gRegion, 512, 0.74, "icon-512.png");
+await iconOnWhite(gRegion, 180, 0.74, "apple-touch-icon.png");
+// Maskable: el glifo vive en la zona segura (60% central)
+await iconOnWhite(gRegion, 512, 0.56, "maskable-512.png");
+
+// 3) Favicon PNG
+const fav = await sharp(gRegion).resize(56, 56, { fit: "inside" }).png().toBuffer();
+await sharp({
+  create: { width: 64, height: 64, channels: 4, background: "#ffffff" },
+})
+  .composite([{ input: fav, gravity: "center" }])
+  .png()
+  .toFile(path.join(publicDir, "favicon.png"));
+console.log("✓ favicon.png");

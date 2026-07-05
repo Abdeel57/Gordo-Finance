@@ -12,9 +12,12 @@ type ButtonVariant = "primary" | "income" | "expense" | "outline" | "ghost" | "d
 type ButtonSize = "sm" | "md" | "lg";
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: "bg-navy text-white active:bg-navy-2 dark:bg-raised dark:text-ink",
-  income: "bg-income text-white active:bg-income-deep",
-  expense: "bg-expense text-white active:bg-expense-deep",
+  primary:
+    "bg-navy text-white active:bg-navy-2 shadow-[0_10px_24px_-12px_rgba(13,21,18,0.5)] dark:bg-raised dark:text-ink dark:shadow-none",
+  income:
+    "bg-gradient-to-b from-brand-bright to-income text-white active:from-income active:to-income-deep shadow-[0_10px_24px_-10px_rgba(6,118,71,0.55)]",
+  expense:
+    "bg-gradient-to-b from-expense to-expense-deep text-white active:from-expense-deep active:to-expense-deep shadow-[0_10px_24px_-10px_rgba(216,68,42,0.45)]",
   outline: "border border-line bg-card text-ink",
   ghost: "text-ink-soft",
   danger: "bg-expense-tint text-expense-text",
@@ -67,7 +70,7 @@ export function Card({
     <div
       className={cx(
         "rounded-3xl border border-line/60 bg-card p-5",
-        "shadow-[0_1px_2px_rgba(13,20,44,0.05),0_10px_28px_-14px_rgba(13,20,44,0.14)]",
+        "shadow-[0_1px_2px_rgba(8,40,25,0.04),0_12px_30px_-16px_rgba(8,40,25,0.18)]",
         className
       )}
     >

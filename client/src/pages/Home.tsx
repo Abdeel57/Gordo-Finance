@@ -77,25 +77,19 @@ export default function Home() {
   return (
     <div className="space-y-5">
       <header className="rise-in pt-2">
-        <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-ink-faint">
-          Cuenta Clara
-        </p>
+        <img
+          src="/logo.png"
+          alt="Gordo Finance"
+          className="logo-adaptive mb-1.5 h-7 w-auto"
+        />
         <h1 className="font-display text-[27px] font-bold text-ink">Tu dinero hoy</h1>
       </header>
 
       {/* Balance disponible */}
       <section
-        className="rise-in relative overflow-hidden rounded-[28px] bg-navy p-6 text-white shadow-[0_18px_44px_-18px_rgba(9,15,35,0.55)]"
+        className="hero-gradient rise-in relative overflow-hidden rounded-[28px] p-6 text-white shadow-[0_20px_44px_-18px_rgba(7,45,28,0.55)]"
         style={{ animationDelay: "60ms" }}
       >
-        <div
-          aria-hidden
-          className="absolute -right-14 -top-20 h-52 w-52 rounded-full bg-[#10b981] opacity-25 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="absolute -bottom-24 -left-14 h-44 w-44 rounded-full bg-[#e4572e] opacity-15 blur-3xl"
-        />
         <p className="relative text-[13px] font-medium text-white/60">
           Lo que deberías tener en tus cuentas
         </p>
@@ -105,7 +99,7 @@ export default function Home() {
         <div className="relative mt-6 grid grid-cols-2 gap-3">
           <div className="rounded-2xl bg-white/10 p-3.5">
             <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide text-white/60">
-              <ArrowDownLeft size={13} className="text-[#3ecf9a]" />
+              <ArrowDownLeft size={13} className="text-[#43d492]" />
               Ingresos
             </p>
             <p className="tnum mt-1 font-display text-[17px] font-bold">{fmtMXN(income)}</p>
